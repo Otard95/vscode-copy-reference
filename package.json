@@ -10,18 +10,14 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:copy-reference.helloWorld"
+    "onCommand:copy-reference.copyAtCursor"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "copy-reference.helloWorld",
-        "title": "Hello World"
-      },
-      {
         "command": "copy-reference.copyAtCursor",
-        "title": "Copy reference"
+        "title": "Copy Reference"
       }
     ],
     "menus": {
