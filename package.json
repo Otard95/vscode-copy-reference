@@ -4,6 +4,9 @@
   "publisher": "Otard",
   "description": "Generate and copy a reference to pice of code.",
   "version": "1.0.0",
+  "repository": {
+    "url": "https://github.com/Otard95/vscode-copy-reference"
+  },
   "engines": {
     "vscode": "^1.51.0"
   },
