@@ -1,7 +1,7 @@
 {
   "name": "copy-reference",
   "displayName": "Reference",
-  "description": "Generate and copy a referance to pice of code.",
+  "description": "Generate and copy a reference to pice of code.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.51.0"
