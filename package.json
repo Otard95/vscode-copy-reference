@@ -1,6 +1,7 @@
 {
   "name": "copy-reference",
   "displayName": "Reference",
+  "publisher": "Otard",
   "description": "Generate and copy a reference to pice of code.",
   "version": "0.0.1",
   "engines": {
