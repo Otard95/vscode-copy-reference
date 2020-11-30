@@ -1,6 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { extname } from 'path'
 import isNumber from './utils/isNumber';
 import isObject from './utils/isObject';
 import isString from './utils/isString';
@@ -31,8 +32,6 @@ export function activate(context: vscode.ExtensionContext) {
       || !isObject(editor)
     ) return
 
-    vscode.window.showWarningMessage(JSON.stringify(selection))
-
     const relativePath = filePath.replace(root, projectName)
 
     if (!selection.isEmpty) {
@@ -42,12 +41,13 @@ export function activate(context: vscode.ExtensionContext) {
         lines.push(editor.document.lineAt(i))
       }
       const indent = lines.reduce((max, line) => {
-        return Math.max(line.firstNonWhitespaceCharacterIndex, max)
-      }, 0)
+        return Math.min(line.firstNonWhitespaceCharacterIndex, max)
+      }, Infinity)
       const selectedText = lines
-        .map(line => line.text.substring(Math.max(indent-1, 0)))
+        .map(line => line.text.substring(Math.max(indent, 0)))
         .join('\n')
-      vscode.env.clipboard.writeText(`\`${relativePath}:${line}\`\n\`\`\`\n${selectedText}\n\`\`\``)
+      const ext = extname(filePath).substring(1)
+      vscode.env.clipboard.writeText(`\`${relativePath}:${line}\`\n\`\`\`${ext}\n${selectedText}\n\`\`\``)
     } else {
       vscode.env.clipboard.writeText(`\`${relativePath}:${line + 1}\``)
     }
