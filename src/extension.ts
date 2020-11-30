@@ -47,7 +47,7 @@ export function activate(context: vscode.ExtensionContext) {
         .map(line => line.text.substring(Math.max(indent, 0)))
         .join('\n')
       const ext = extname(filePath).substring(1)
-      vscode.env.clipboard.writeText(`\`${relativePath}:${line}\`\n\`\`\`${ext}\n${selectedText}\n\`\`\``)
+      vscode.env.clipboard.writeText(`\`${relativePath}:${line + 1}\`\n\`\`\`${ext}\n${selectedText}\n\`\`\``)
     } else {
       vscode.env.clipboard.writeText(`\`${relativePath}:${line + 1}\``)
     }
