@@ -7,7 +7,7 @@
 			"runtimeExecutable": "${execPath}",
 			"args": [
 				"--extensionDevelopmentPath=${workspaceFolder}",
-        "C:\\Users\\stian\\Documents\\dev\\repo\\vscode-copy-reference"
+        "/home/otard/tsoding/vscode-copy-reference"
 			],
 			"outFiles": [
 				"${workspaceFolder}/out/**/*.js"

@@ -24,8 +24,24 @@
         "copy-reference.format": {
           "type": "string",
           "default": "Markdown",
-          "enum": ["Markdown", "Plain Text"],
+          "enum": [
+            "Markdown",
+            "Plain Text",
+            "Custom"
+          ],
           "description": "The default format the reference will we copied in."
+        },
+        "copy-reference.customBlock": {
+          "type": "string",
+          "description": "Specify your own reference block format."
+        },
+        "copy-reference.customSimple": {
+          "type": "string",
+          "description": "Specify your own simple reference format."
+        },
+        "copy-reference.disableCopyConfirmation": {
+          "type": "boolean",
+          "description": "Disable the info message confirming that the reference was copied"
         }
       }
     },
@@ -47,16 +63,18 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"lint": "eslint . --ext .ts,.tsx",
-		"watch": "tsc -watch -p ./"
+    "compile": "tsc -p ./",
+    "lint": "eslint . --ext .ts,.tsx",
+    "watch": "tsc -watch -p ./"
   },
   "devDependencies": {
     "@types/node": "^12.12.0",
-		"@types/vscode": "^1.32.0",
-		"@typescript-eslint/eslint-plugin": "^4.16.0",
-		"@typescript-eslint/parser": "^4.16.0",
-		"eslint": "^7.21.0",
-		"typescript": "^4.5.5"
+    "@types/vscode": "^1.32.0",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "typescript": "^4.7.4"
   }
 }

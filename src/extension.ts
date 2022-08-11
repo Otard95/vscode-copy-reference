@@ -1,14 +1,12 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
-import { extname, basename } from 'path'
-import isNumber from './utils/isNumber';
-import isObject from './utils/isObject';
-import isString from './utils/isString';
-import { block as MdBlock, simple as MdSimple } from './templates/markdown';
-import { block as PlainBlock, simple as PlainSimple } from './templates/plain';
-
-let lastFailed = 0
+import * as vscode from 'vscode'
+import { extname } from 'path'
+import getSelection from './utils/getSelection'
+import getReferenceContext from './utils/getReferenceContext'
+import normalizePath from './utils/normalizePath'
+import getTemplate from './utils/getTemplate'
+import showConfirmation from './utils/showConfirmation'
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -20,72 +18,29 @@ export function activate(context: vscode.ExtensionContext) {
 
   const copyAtCursor = vscode.commands.registerCommand('copy-reference.copyAtCursor', () => {
 
-    const editor = vscode.window.activeTextEditor
-    const root = (vscode.workspace.workspaceFolders || [])[0]?.uri.fsPath
-    const filePath = editor?.document.fileName || 'Unknown-File'
-    const selection = editor?.selection
-    const line = selection?.start.line
-    const projectName = vscode.workspace.name
-    const configuration = vscode.workspace.getConfiguration('copy-reference')
-    const format = configuration.get('format')
+    const context = getReferenceContext()
 
-    if (
-      !isString(filePath)
-      || !isString(root)
-      || !isNumber(line)
-      || !isObject(selection)
-      || !isObject(editor)
-    ) {
-      if (Date.now() - lastFailed > 20000)
-        vscode.window.showWarningMessage(
-          'Oops, seems that could not be copied',
-          'Try saving the file first.'
-        ).then(res => !!res && editor?.document.save())
-      else
-        vscode.window.showWarningMessage(
-          'Hmm seems there\'s a bigger issue. If the problem persist take note of the circumstances and report it.',
-          'Create an Issue'
-        ).then(
-          res => !!res && vscode.commands.executeCommand(
-            'vscode.open',
-            vscode.Uri.parse('https://github.com/Otard95/vscode-copy-reference/issues')
-          )
-        )
-      lastFailed = Date.now()
+    if (!context) {
       return
     }
 
-    let relativePath = basename(filePath)
-    if (isString(root) && isString(projectName))
-      relativePath = filePath.replace(root, projectName)
+    const relativePath = normalizePath(context.filePath.replace(context.root, ''))
 
-    const template = (format || 'Markdown') === 'Markdown'
-      ? { block: MdBlock, simple: MdSimple }
-      : { block: PlainBlock, simple: PlainSimple }
+    const template = getTemplate()
 
-    if (!selection.isEmpty) {
-      if (editor.document.isDirty) editor.document.save()
-      const lines = []
-      for (let i = selection.start.line; i <= selection.end.line; i++) {
-        lines.push(editor.document.lineAt(i))
-      }
-      const indent = lines.reduce((max, line) => {
-        return Math.min(line.firstNonWhitespaceCharacterIndex, max)
-      }, Infinity)
-      const selectedText = lines
-        .map(line => line.text.substring(Math.max(indent, 0)))
-        .join('\n')
-      const ext = extname(filePath).substring(1)
-      vscode.env.clipboard.writeText(template.block(relativePath, line, ext, selectedText))
+    if (!context.selection.isEmpty) {
+      const selectedText = getSelection(context.selection, context.editor)
+      const ext = extname(context.filePath).substring(1)
+      vscode.env.clipboard.writeText(template.block(context.projectName, relativePath, context.line + 1, ext, selectedText))
     } else {
-      vscode.env.clipboard.writeText(template.simple(relativePath, line))
+      vscode.env.clipboard.writeText(template.simple(context.projectName, relativePath, context.line))
     }
 
-    vscode.window.showInformationMessage(`Copied to clipboard!`)
+    showConfirmation()
 
   })
 
-  context.subscriptions.push(copyAtCursor);
+  context.subscriptions.push(copyAtCursor)
 }
 
 // this method is called when your extension is deactivated

@@ -1,9 +1,13 @@
 # Change Log
 
-All notable changes to the "copy-reference" extension will be documented in this file.
+### 1.2.0
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+Added custom formats and option to disable copy confirmation.
 
-## [Unreleased]
+### 1.1.0
 
-- Initial release
+Added plain text reference format
+
+### 1.0.0
+
+Initial release of **Reference**

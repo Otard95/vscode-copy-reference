@@ -1,11 +1,15 @@
-export const block = (
+import { TemplateBlockFn, TemplateSimpleFn } from '../utils/getTemplate'
+
+export const block: TemplateBlockFn = (
+  projectName: string,
   relativePath: string,
   line: number,
   _ext: string,
   selectedText: string
-) => `${relativePath}:${line}\n${selectedText}`
+) => `${projectName}/${relativePath}:${line}\n${selectedText}`
 
-export const simple = (
+export const simple: TemplateSimpleFn = (
+  projectName: string,
   relativePath: string,
   line: number,
-) => `${relativePath}:${line}`
+) => `${projectName}/${relativePath}:${line}`
