@@ -2,7 +2,7 @@
   "name": "copy-reference",
   "displayName": "Reference",
   "publisher": "Otard",
-  "description": "Generate and copy a reference to a pice of code.",
+  "description": "Generate and copy a reference to a piece of code.",
   "version": "1.2.0",
   "repository": {
     "url": "https://github.com/Otard95/vscode-copy-reference"
